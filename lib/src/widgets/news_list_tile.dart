@@ -14,8 +14,7 @@ class NewsListTile extends StatelessWidget {
 
     return StreamBuilder(
       stream: bloc.items,
-      builder: (context,
-          AsyncSnapshot<Map<int, Future<ItemModel>>> snapshot) {
+      builder: (context, AsyncSnapshot<Map<int, Future<ItemModel>>> snapshot) {
         if (!snapshot.hasData) {
           return Center(
             child: LoadingContainer(),
@@ -29,17 +28,20 @@ class NewsListTile extends StatelessWidget {
                 child: LoadingContainer(),
               );
             }
-            return buildTile(itemSnapshot.data);
+            return buildTile(itemSnapshot.data, context);
           },
         );
       },
     );
   }
 
-  Widget buildTile(ItemModel item) {
+  Widget buildTile(ItemModel item, BuildContext context) {
     return Column(
       children: [
         ListTile(
+          onTap: () {
+            Navigator.pushNamed(context, '/${item.id}');
+          },
           title: Text(item.title),
           subtitle: Text('${item.score} points'),
           trailing: Column(
